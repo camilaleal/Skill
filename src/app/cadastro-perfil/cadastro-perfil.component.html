@@ -1,4 +1,6 @@
-<h1>Cadastro de Perfil</h1>
+<header _ngcontent-thl-c60 class="docs-primary-header component-page-header">
+<h1 _ngcontent-thl-c60>Cadastro de Perfil</h1>
+</header>
 
 <form (ngSubmit)="onSubmit()">
 
@@ -9,34 +11,38 @@
   </div>
 
 <br>
-<br>
 
 <div class="form-group">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Idade" type="text" class="form-control" [(ngModel)]="perfil.idade" name="idade" />
-    </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Sobrenome" type="text" class="form-control" [(ngModel)]="perfil.sobrenome" name="sobrenome" />
+  </mat-form-field>
 </div>
 
 <br>
-<br>
-  <div class="form-group">
-     <mat-form-field class="example-full-width">
-       <textarea matInput placeholder="Leave a comment" type="text" class="md-textarea md-textarea-auto form-control" [(ngModel)]="perfil.apresentacao" name="apresentacao" id="form7" ></textarea>
-     </mat-form-field>
-  </div>
-<br>
 
 <div class="form-group">
-    <mat-form-field class="example-full-width">
-    <input matInput placeholder="Habilidade" type="text" class="form-control" [(ngModel)]="perfil.habilidade" name="habilidade" />
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Profissao" type="text" class="form-control" [(ngModel)]="perfil.profissao" name="profissao" />
   </mat-form-field>
-  </div>
+</div>
 
+<br>
+
+
+<!-- 
+<div>
+  <app-form-skill [(habilidade)]="habilidades"> </app-form-skill>
+</div> 
+-->
+
+<div class="form-group">
+  <app-edit></app-edit><br>
+  <app-list></app-list>
+</div> 
+<br>
 <br>
 
 <button type="submit" mat-raised-button color="primary">Salvar</button>
-<p>{{perfil.nome}}</p>
-<p>{{perfil.idade}}</p>
-<p>{{perfil.apresentacao}}</p>
-<p>{{perfil.habilidade}}</p>
-</form>
+
+</form>  
+

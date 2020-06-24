@@ -4,6 +4,7 @@ import { PerfilService } from '../perfil.service';
 import { PerfilDataService } from '../perfil-data.service';
 
 
+
 @Component({
   selector: 'app-cadastro-perfil',
   templateUrl: './cadastro-perfil.component.html',
@@ -12,7 +13,7 @@ import { PerfilDataService } from '../perfil-data.service';
 export class CadastroPerfilComponent implements OnInit {
   perfil: Perfil;
   key = '';
-
+  
 
   constructor(private perfilService: PerfilService, private perfilDataService: PerfilDataService) { }
 
@@ -24,9 +25,11 @@ export class CadastroPerfilComponent implements OnInit {
       if (data.perfil && data.key) {
         this.perfil = new Perfil();
         this.perfil.nome = data.perfil.nome;
-        this.perfil.idade = data.perfil.idade;
-        this.perfil.apresentacao = data.perfil.apresentacao;
+        this.perfil.sobrenome = data.perfil.sobrenome;
+        this.perfil.profissao = data.perfil.profissao;
+       // this.perfil.cidade = data.perfil.cidade;
         this.perfil.habilidade = data.perfil.habilidade;
+        this.perfil.nivel = data.perfil.nivel;
         this.key = data.key;
       }
     });

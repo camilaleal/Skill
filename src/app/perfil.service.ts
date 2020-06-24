@@ -38,4 +38,16 @@ export class PerfilService {
   delete(key: string) {
     this.db.object(`perfil/${key}`).remove();
   }
+
+  search(habilidade: string){
+    return this.db.list('perfil', ref => ref.orderByChild('habilidade').equalTo(habilidade))
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          console.log(changes);
+          return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+        })
+      );
+
+  }
 }

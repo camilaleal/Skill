@@ -1,6 +1,7 @@
 export class Perfil {
   nome = '';
-  idade = '';
-  apresentacao = '';
+  sobrenome = '';
+  profissao = '';
   habilidade = '';
+  nivel = '';
 }

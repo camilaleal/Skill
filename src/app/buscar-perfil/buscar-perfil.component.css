@@ -22,3 +22,51 @@
   table {
   width: 100%;
 }
+
+.mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.component-page-header[_ngcontent-sjk-c63] {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+h3[_ngcontent-sjk-c63] {
+  outline: none;
+}
+.docs-primary-header h3 {
+  color: #fff;
+}
+
+.docs-component-sidenav-content, 
+.docs-component-sidenav-inner-content {
+  -webkit-box-direction: normal;
+}
+
+.component-page-header[_ngcontent-thl-c60] {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+
+}
+
+h1[_ngcontent-thl-c60] {
+  outline: none;
+}
+.docs-primary-header h1 {
+  color: #fff;
+}
+
+.docs-primary-header {
+  background: #3f51b5;
+}
+
+.docs-primary-header h1 {
+  font-weight: 300;
+  margin: 0;
+  padding: 28px 8px;
+  font-size: 20px;
+}

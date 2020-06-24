@@ -14,10 +14,10 @@ import { MatTableDataSource } from '@angular/material';
   styleUrls: ['./buscar-perfil.component.css']
 })
 export class BuscarPerfilComponent implements OnInit {
-  displayedColumns: string[] = ['nome', 'idade', 'apresentacao', 'habilidade', 'Editar', 'Deletar'];
+  displayedColumns: string[] = ['nome', 'sobrenome', 'profissao', 'habilidade', 'nivel', 'Editar', 'Deletar'];
   perfil: Observable<any>;
   public dataSource = new MatTableDataSource<Perfil>();
-  nome: string;
+  habilidade: string;
 
 
   constructor(private perfilService: PerfilService, private perfilDataService: PerfilDataService) {
@@ -29,7 +29,11 @@ export class BuscarPerfilComponent implements OnInit {
   }
 
   Search() {
-    console.log(this.nome);
+    console.log("habilidade: ",this.habilidade);
+    if(!this.habilidade)
+      this.perfil = this.perfilService.getAll();
+    else
+      this.perfil = this.perfilService.search(this.habilidade);
    // this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
   

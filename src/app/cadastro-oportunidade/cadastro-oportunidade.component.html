@@ -1,0 +1,39 @@
+<header _ngcontent-thl-c60 class="docs-primary-header component-page-header">
+  <h1 _ngcontent-thl-c60>Cadastro de Oportunidades</h1>
+  </header>
+
+
+  <br>
+<form (ngSubmit)="onSubmit()">
+
+<!--campo tipo de oportunidade do tipo select-->
+<div class="form-group">
+  <mat-form-field class="example-full-width">
+    <mat-label>Tipo de Oportunidade</mat-label>
+    <mat-select  [(value)]="valor">
+      <mat-option *ngFor="let tipo of tipos" value= {{tipo.type_oportunidade}}>
+        {{tipo.type_oportunidade}}
+      </mat-option>
+    </mat-select> 
+  </mat-form-field>
+</div>
+<br>
+<!--campo descrição do tipo text area-->
+<!-- <div class="form-group">
+    <mat-form-field class="example-full-width">
+    <input matInput placeholder="Descrição" type="text" class="form-control" [(ngModel)]="oportunidades.descricao" name="descricao" />
+  </mat-form-field>
+  </div> -->
+<div class="form-group">
+  <mat-form-field class="example-full-width">
+    <textarea matInput placeholder="Descrição" type="text" class="form-control" [(ngModel)]="oportunidades.descricao" name="descricao"></textarea>
+  </mat-form-field>
+</div>
+<br>
+
+<!--campo localidade do tipo select-->
+
+
+<button type="submit" mat-raised-button color="primary">Salvar</button>
+
+</form>
