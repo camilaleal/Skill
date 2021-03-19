@@ -30,7 +30,8 @@ export class PerfilService {
       .snapshotChanges()
       .pipe(
         map(changes => {
-          return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+          return changes.map(c => ({ key: c.payload.key, ...c.payload.exportVal()
+          }));
         })
       );
   }
@@ -45,7 +46,8 @@ export class PerfilService {
       .pipe(
         map(changes => {
           console.log(changes);
-          return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }));
+          return changes.map(c => ({ key: c.payload.key, ...c.payload.exportVal()
+          }));
         })
       );
 

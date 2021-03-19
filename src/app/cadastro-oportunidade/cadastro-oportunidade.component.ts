@@ -11,11 +11,8 @@ import { OportunidadesDataService } from '../Oportunidades-data.service';
 })
 export class CadastroOportunidadeComponent implements OnInit {
   oportunidades: Oportunidades;
-  tipos = [
-    new Oportunidades('Emprego'),
-    new Oportunidades('Consultor'),
-    new Oportunidades('´Palestrante')
-] 
+
+
 
   key = '';
 
@@ -27,17 +24,20 @@ export class CadastroOportunidadeComponent implements OnInit {
     private oportunidadesService: OportunidadesService,
     private oportunidadesDataService: OportunidadesDataService) { }
 
+
+
   ngOnInit() {
     this.oportunidades = new Oportunidades();
     this.oportunidadesDataService.currentOportunidades.subscribe(data => {
       if (data.oportunidades && data.key) {
         this.oportunidades = new Oportunidades();
-        this.oportunidades.type_oportunidade = data.oportunidades.type_oportunidade;
         this.oportunidades.descricao = data.oportunidades.descricao;
         this.key = data.key;
       }
     });
   }
+
+
 
   onSubmit() {
     if (this.key) {
