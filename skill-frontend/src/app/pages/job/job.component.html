@@ -1,0 +1,58 @@
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
+  <span class="mask bg-dark"></span>
+</div>
+<div class="container-fluid mt--9 pb-5" *ngIf="jobs">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0 float-left">
+            Lista de Vagas
+          </h3>
+          <div class="float-right">
+            <app-search (value)="changeSearch($event)"></app-search>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Senioridade</th>
+                <th scope="col">Salário base</th>
+                <th scope="col">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let job of jobs">
+                <th scope="row">
+                  <a routerLink="/vaga/{{job.id}}">
+                    {{job.id}}
+                  </a>
+                </th>
+                <th>
+                  {{job.name}}
+                </th>
+                <td>
+                  {{job.description}}
+                </td>
+                <td>
+                  <app-job-level [level]="job.level"></app-job-level>
+                </td>
+                <td>
+                  {{job.remuneration | currency}}
+                </td>
+                <td>
+                  {{job.team.name}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-empty-list *ngIf="!jobs.length"></app-empty-list>
+      </div>
+    </div>
+  </div>
+</div>

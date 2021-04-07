@@ -1,0 +1,138 @@
+<div class="header bg-gradient-dark pb-8 pt-5 pt-md-8">
+  <div class="container-fluid" *ngIf="jobApplicant">
+    <div class="header-body">
+      <div class="row">
+        <div class="col-xl-4 col-lg-6">
+          <a routerLink="/usuario/{{jobApplicant.applicant.id}}">
+            <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <h5 class="card-title text-uppercase text-muted mb-0">CANDIDATO</h5>
+                    <span class="h2 font-weight-bold mb-0">{{jobApplicant.applicant.name}}</span>
+                  </div>
+                  <div class="col-auto avatar-group">
+                    <div class="avatar avatar-lg">
+                      <img [alt]="jobApplicant.applicant.name" [src]="jobApplicant.applicant.image"
+                        class="rounded-circle">
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0 text-muted text-sm">
+                  <span class="text-dark mr-2">
+                    {{jobApplicant.applicant.currentPosition}} -
+                    {{jobApplicant.applicant.currentCompany}}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+          <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-muted mb-0">score</h5>
+                  <span class="h2 font-weight-bold mb-0 score">{{jobApplicant.score}}%</span>
+                </div>
+                <div class="col-auto">
+                  <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
+                    <i class="fas fa-percent"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+          <a routerLink="/vaga/{{jobApplicant.job.id}}">
+            <div class="card card-stats mb-4 mb-xl-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <h5 class="card-title text-uppercase text-muted mb-0">vaga</h5>
+                    <span class="h2 font-weight-bold mb-0">{{jobApplicant.job.name}}</span>
+                  </div>
+                  <div class="col-auto">
+                    <div class="icon icon-shape bg-dark text-white rounded-circle shadow">
+                      <i class="fas fa-user-tie"></i>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-4 mb-0 text-muted text-sm">
+                  <span class="text-nowrap">
+                    <app-job-level [level]="jobApplicant.job.level"></app-job-level>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7 pb-5" *ngIf="jobApplicant">
+  <div class="row">
+    <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+      <div class="card shadow">
+        <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+
+        </div>
+        <div class="card-body pt-0 pt-mt-4">
+          <h3> Descrição da Vaga</h3>
+          <p>{{jobApplicant.job.description}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Comparativo</h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">Vaga</th>
+                <th scope="col">Candidato</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="col">Remuneração</th>
+                <td>{{jobApplicant.job.remuneration | currency}} </td>
+                <td>{{jobApplicant.salaryClaim | currency}} </td>
+                <td>{{jobApplicant.job.remuneration - jobApplicant.salaryClaim | currency}} </td>
+              </tr>
+              <tr>
+                <th scope="col" colspan="3">Skills</th>
+              </tr>
+              <tr *ngFor="let jobSkill of jobApplicant.job.skills">
+                <td>
+                  {{jobSkill.skill.name}}
+                </td>
+                <td>
+                  <app-star-ranking [ranking]="jobSkill.ranking"></app-star-ranking>
+                </td>
+                <td>
+                  <app-star-ranking [ranking]="jobSkill.rankingApplicant"></app-star-ranking>
+                </td>
+                <td>
+                  <i *ngIf="jobSkill.rankingApplicant > jobSkill.ranking" class="fas fa-star mx-2 text-dark"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
