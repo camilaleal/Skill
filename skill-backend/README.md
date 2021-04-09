@@ -12,7 +12,7 @@
 
 - Clonar repositório (git clone https://github.com/camilaleal/Skill.git)
 - Entar na pasta (skilliks-backend)
-- Abrir a solução do projeto (SENACRS.ADS.Skilliks.Backend.sln)
+- Abrir a solução do projeto (SENACRS.ADS.Skill.Backend.sln)
 - Rodar o projeto (Clicar no botão IIS Express, simbolo de play verde na barra superior de ferramentar)
 
 ## Arquitetura
