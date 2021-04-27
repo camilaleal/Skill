@@ -13,43 +13,43 @@ declare interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  {
-    path: '/usuarios', title: 'Usuários',
-    icon: 'fa-user', class: 'text-primary',
-    userType: [UserType.employee],
-    userCategory: [UserCategory.humanResources]
-  },
+  // {
+  //   path: '/usuarios', title: 'Usuários',
+  //   icon: 'fa-user', class: 'text-primary',
+  //   userType: [UserType.employee],
+  //   userCategory: [UserCategory.humanResources]
+  // },
   {
     path: '/candidaturas', title: 'Candidaturas',
     icon: 'fa-chalkboard-teacher', class: 'text-primary',
     userType: [UserType.employee, UserType.applicant],
-    userCategory: [UserCategory.humanResources, UserCategory.technical]
+    userCategory: [UserCategory.humanResources]
   },
   {
     path: '/vagas', title: 'Vagas',
     icon: 'fa-user-tie', class: 'text-primary',
     userType: [UserType.employee, UserType.applicant],
-    userCategory: [UserCategory.humanResources, UserCategory.technical]
+    userCategory: [UserCategory.humanResources]
   },
-  {
-    path: '/skills', title: 'Skills',
-    icon: 'fa-laptop-code', class: 'text-primary',
-    userType: [UserType.employee],
-    userCategory: [UserCategory.humanResources, UserCategory.technical]
-  },
+  // {
+  //   path: '/skills', title: 'Skills',
+  //   icon: 'fa-laptop-code', class: 'text-primary',
+  //   userType: [UserType.employee],
+  //   userCategory: [UserCategory.humanResources, UserCategory.technical]
+  // },
   {
     path: '/entrevistas', title: 'Entrevistas',
     icon: 'fa-clipboard', class: 'text-primary',
     userType: [UserType.employee, UserType.applicant],
     userCategory: [UserCategory.humanResources, UserCategory.technical]
   }
-  ,
-  {
-    path: '/times', title: 'Times',
-    icon: 'fa-users', class: 'text-primary',
-    userType: [UserType.employee],
-    userCategory: [UserCategory.humanResources, UserCategory.technical]
-  }
+  // ,
+  // {
+  //   path: '/times', title: 'Times',
+  //   icon: 'fa-users', class: 'text-primary',
+  //   userType: [UserType.employee],
+  //   userCategory: [UserCategory.humanResources, UserCategory.technical]
+  // }
 ];
 
 @Component({
