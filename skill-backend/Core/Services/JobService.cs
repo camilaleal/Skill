@@ -12,18 +12,18 @@ namespace Core.Services
         private readonly IJobRepository _repository;
         private readonly IJobSkillRepository _jobSkillRepository;
         private readonly ISkillRepository _skillRepository;
-        private readonly ITeamRepository _teamRepository;
+        private readonly ICompanyRepository _CompanyRepository;
 
         public JobService(
             IJobRepository repository,
             IJobSkillRepository jobSkillRepository,
             ISkillRepository skillRepository,
-            ITeamRepository teamRepository)
+            ICompanyRepository CompanyRepository)
         {
             _repository = repository;
             _jobSkillRepository = jobSkillRepository;
             _skillRepository = skillRepository;
-            _teamRepository = teamRepository;
+            _CompanyRepository = CompanyRepository;
         }
 
         public void Delete(long id)
@@ -39,7 +39,7 @@ namespace Core.Services
             if(job != null)
             {
                 job.Skills = LoadSkills(id);
-                job.Team = LoadTeam(job.IdTeam);
+                job.Company = LoadCompany(job.IdCompany);
             }
 
             return job;
@@ -52,7 +52,7 @@ namespace Core.Services
             foreach (var job in jobs)
             {
                 job.Skills = LoadSkills(job.Id);
-                job.Team = LoadTeam(job.IdTeam);
+                job.Company = LoadCompany(job.IdCompany);
             }
 
             return jobs;
@@ -110,10 +110,10 @@ namespace Core.Services
                 .ToList();
         }
 
-        private Team LoadTeam(long id)
+        private Company LoadCompany(long id)
         {
-            var team = _teamRepository.Get(id);
-            return team;
+            var Company = _CompanyRepository.Get(id);
+            return Company;
         }
     }
 }

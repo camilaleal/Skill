@@ -63,7 +63,7 @@ namespace Data.Migration.Versions
                              Level          NUMERIC,
                              Remuneration   DECIMAL,
                              MinScore       DECIMAL,
-                             IdTeam         INTEGER
+                             IdCompany         INTEGER
                           );");
 
             sql.AppendLine(@"create table JobSkill
@@ -130,7 +130,7 @@ namespace Data.Migration.Versions
                              Date               DATETIME
                           );");
 
-            sql.AppendLine(@"create table Team
+            sql.AppendLine(@"create table Company
                           (
                              Id             INTEGER,
                              ExclusionDate  DATETIME,
@@ -156,7 +156,7 @@ namespace Data.Migration.Versions
             sql.AppendLine(@"drop table JobFeedBack;");
             sql.AppendLine(@"drop table JobFeedBackSkill;");
             sql.AppendLine(@"drop table JobInterview;");
-            sql.AppendLine(@"drop table Team;");
+            sql.AppendLine(@"drop table Company;");
 
             return sql.ToString();
         }

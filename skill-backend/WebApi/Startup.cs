@@ -42,7 +42,7 @@ namespace WebApi
             services.AddSingleton(typeof(ISkillRepository), typeof(SkillRepository));
             services.AddSingleton(typeof(IUserRepository), typeof(UserRepository));
             services.AddSingleton(typeof(IUserSkillRepository), typeof(UserSkillRepository));
-            services.AddSingleton(typeof(ITeamRepository), typeof(TeamRepository));
+            services.AddSingleton(typeof(ICompanyRepository), typeof(CompanyRepository));
 
             //Services
             services.AddSingleton(typeof(IJobApplicantService), typeof(JobApplicantService));
@@ -51,7 +51,7 @@ namespace WebApi
             services.AddSingleton(typeof(IJobService), typeof(JobService));
             services.AddSingleton(typeof(ISkillService), typeof(SkillService));
             services.AddSingleton(typeof(IUserService), typeof(UserService));
-            services.AddSingleton(typeof(ITeamService), typeof(TeamService));
+            services.AddSingleton(typeof(ICompanyService), typeof(CompanyService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

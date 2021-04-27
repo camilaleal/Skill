@@ -10,10 +10,10 @@ namespace Domain.Models
     public class User : Entity, IEntity
     {
         [Category(EntityPropertyCategory.Model)]
-        public long IdTeam { get; set; }
+        public long IdCompany { get; set; }
 
         [Category(EntityPropertyCategory.Relacional)]
-        public Team Team { get; set; }
+        public Company Company { get; set; }
 
 
         [Category(EntityPropertyCategory.Model)]
@@ -125,13 +125,14 @@ namespace Domain.Models
 
     public enum UserType
     {
-        Employee = 1,
-        Applicant = 2
+        Unemployed = 1,
+        Employee = 2,
     }
 
     public enum UserCategory
     {
-        Technical = 1,
-        HumanResources = 2
+        Normal = 1,
+        Technical = 2,
+        HumanResources = 3
     }
 }

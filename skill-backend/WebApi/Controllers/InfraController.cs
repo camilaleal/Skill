@@ -31,6 +31,9 @@ namespace WebApi.Controllers
         private readonly IJobApplicantRepository _jobApplicantRepository;
         private readonly IJobApplicantService _jobApplicantService;
 
+        private readonly ICompanyRepository _companyRepository;
+        private readonly ICompanyService _companyService;
+
         public InfraController(
             ISkillRepository skillRepository,
             ISkillService skillService,
@@ -41,7 +44,9 @@ namespace WebApi.Controllers
             IJobRepository jobRepository,
             IJobSkillRepository jobSkillRepository,
             IJobApplicantRepository jobApplicantRepository,
-            IJobApplicantService jobApplicantService
+            IJobApplicantService jobApplicantService,
+            ICompanyRepository companyRepository,
+            ICompanyService companyService
         )
         {
             _random = new Random();
@@ -59,6 +64,9 @@ namespace WebApi.Controllers
 
             _jobApplicantRepository = jobApplicantRepository;
             _jobApplicantService = jobApplicantService;
+
+            _companyRepository = companyRepository;
+            _companyService = companyService;
         }
 
         [HttpPost]
@@ -83,6 +91,7 @@ namespace WebApi.Controllers
         {
             try
             {
+                LoadMockCompanys();
                 LoadMockSkills();
                 LoadMockUsers();
                 LoadMockJobs();
@@ -96,7 +105,31 @@ namespace WebApi.Controllers
             }
         }
 
-        private void LoadMockSkills()
+        private void LoadMockCompanys()
+        {
+
+            int numberMaximumCompany = 5;
+
+            foreach (var item in _companyRepository.GetAll())
+            {
+                _companyRepository.DeletePhysical(item.Id);
+            }
+
+            for (int i = 1; i <= numberMaximumCompany; i++)
+            {
+                var newCompany = new Company()
+                {
+                    Name = RamdomCompany(),
+                    Description = RamdomDescription()
+
+                };
+
+                _companyRepository.Insert(newCompany);
+            }
+
+        }
+
+            private void LoadMockSkills()
         {
             foreach (var item in _skillRepository.GetAll())
             {
@@ -131,6 +164,7 @@ namespace WebApi.Controllers
             }
 
             var skills = _skillRepository.GetAll();
+            var companys = _companyRepository.GetAll();
 
             string[] maleFirstNames = {
                 "Ricardo", "Fernando", "Danilo", "Guilherme", "Carlos", "Samuel", "Igor","Marcos","Augusto","Manuel",
@@ -166,7 +200,7 @@ namespace WebApi.Controllers
                     firstName,
                     middleNames[_random.Next(middleNames.Length)],
                     lastNames[_random.Next(lastNames.Length)]);
-
+                var selectedCompany = companys[_random.Next(companys.Count)];
                 var newUser = new User()
                 {
                     Image = string.Format("assets/img/users/{0}.jpg", i),
@@ -179,11 +213,15 @@ namespace WebApi.Controllers
                     Type = GenerateUserType(),
                     Category = GenerateUserCategory(),
                     CurrentPosition = RamdomPosition(),
-                    CurrentCompany = RamdomCompany(),
                     CurrentWage = RamdomValue(),
-                    Skills = new List<UserSkill>()
-                };
+                    Skills = new List<UserSkill>(),
 
+                };
+                if (newUser.Type != UserType.Unemployed)
+                {
+                    newUser.CurrentCompany = selectedCompany.Name;
+                    newUser.IdCompany = selectedCompany.Id;
+                }
                 for (int j = 0; j < _random.Next(1, numberMaximumUserSkill); j++)
                 {
                     var idSkill = skills[_random.Next(skills.Count)].Id;
@@ -218,17 +256,21 @@ namespace WebApi.Controllers
             }
 
             var skills = _skillRepository.GetAll();
+            var companys = _companyRepository.GetAll();
 
             for (int i = 0; i < _random.Next(1, maximumNumberOfJobs); i++)
             {
                 Level level = GenerateLevel();
-
+                var selectedCompany = companys[_random.Next(companys.Count)];
                 var newJob = new Job()
                 {
+                    
                     Name = string.Format("Desenvolvedor {0}", GetLevelName(level)),
                     Description = "Desenvolvimento de novas aplicação com foco no usuário.",
                     Level = level,
                     Remuneration = RamdomValue(),
+                    IdCompany = (Int32)selectedCompany.Id,
+                    Company = selectedCompany,
                     Skills = new List<JobSkill>()
                 };
 
@@ -277,11 +319,6 @@ namespace WebApi.Controllers
 
         #region random data
 
-        private bool RandomBool()
-        {
-            return _random.Next(2) == 0;
-        }
-
         private string GenerateEmail(string name)
         {
             string nickName = name.Replace(" ", "").ToLower();
@@ -312,15 +349,18 @@ namespace WebApi.Controllers
             switch (_random.Next(5))
             {
                 case 1: return UserCategory.HumanResources;
-                default: return UserCategory.Technical;
+                case 2: return UserCategory.Technical;
+                default: return UserCategory.Normal;
             }
         }
 
         private UserType GenerateUserType()
         {
-            return RandomBool()
-                ? UserType.Applicant
-                : UserType.Employee;
+            switch (_random.Next(5))
+            {
+                case 1: return UserType.Unemployed;
+                default: return UserType.Employee;
+            }
         }
 
         private Level GenerateLevel()

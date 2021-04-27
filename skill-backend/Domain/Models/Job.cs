@@ -10,10 +10,10 @@ namespace Domain.Models
     public class Job : Entity, IEntity
     {
         [Category(EntityPropertyCategory.ForeignKey)]
-        public int IdTeam { get; set; }
+        public int IdCompany { get; set; }
 
         [Category(EntityPropertyCategory.Relacional)]
-        public Team Team { get; set; }
+        public Company Company { get; set; }
 
 
         [Category(EntityPropertyCategory.Model)]

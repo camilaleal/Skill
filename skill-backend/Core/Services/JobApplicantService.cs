@@ -51,13 +51,13 @@ namespace Core.Services
         {
             var list = GetAll();
 
-            if (user.Type.Equals(UserType.Applicant))
+            if (user.Type.Equals(UserType.Unemployed))
             {
                 list = list.Where(x => x.Applicant.Id == user.Id).ToList();
             }
             else if (user.Category.Equals(UserCategory.Technical))
             {
-                list = list.Where(x => x.Job.IdTeam == user.IdTeam).ToList();
+                list = list.Where(x => x.Job.IdCompany == user.IdCompany).ToList();
             }
 
             return list;
