@@ -258,7 +258,7 @@ namespace WebApi.Controllers
             var skills = _skillRepository.GetAll();
             var companys = _companyRepository.GetAll();
 
-            for (int i = 0; i < _random.Next(1, maximumNumberOfJobs); i++)
+            for (int i = 0; i < maximumNumberOfJobs; i++)
             {
                 Level level = GenerateLevel();
                 var selectedCompany = companys[_random.Next(companys.Count)];
