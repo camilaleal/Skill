@@ -14,6 +14,7 @@ namespace Data.Migration.Versions
             sql.AppendLine(@"create table User
                           (
                              Id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+                             IdCompany                 INTEGER,
                              ExclusionDate      DATETIME,
                              DisabledDate       DATETIME,
                              RegistryDate       DATETIME,
@@ -63,7 +64,7 @@ namespace Data.Migration.Versions
                              Level          NUMERIC,
                              Remuneration   DECIMAL,
                              MinScore       DECIMAL,
-                             IdCompany         INTEGER
+                             IdCompany      INTEGER
                           );");
 
             sql.AppendLine(@"create table JobSkill
@@ -132,12 +133,13 @@ namespace Data.Migration.Versions
 
             sql.AppendLine(@"create table Company
                           (
-                             Id             INTEGER,
+                             Id             INTEGER PRIMARY KEY AUTOINCREMENT,
                              ExclusionDate  DATETIME,
                              DisabledDate   DATETIME,
                              RegistryDate   DATETIME,
                              Image          TEXT,
-                             Description    TEXT
+                             Description    TEXT,
+                             Name           TEXT
                           );");
 
             return sql.ToString();
