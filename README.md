@@ -7,8 +7,8 @@
 ## :camera: Demonstração
 
 <div align="center" >
-  <img src="./src/github/login.gif" alt="demo-web" height="425">
-  <img src="./src/github/lista.gif" alt="demo-web" height="425">
+  <img src="./github/login.gif" alt="demo-web" height="425">
+  <img src="./github/lista.gif" alt="demo-web" height="425">
 </div>
 
 ## :rocket: Tecnologias
