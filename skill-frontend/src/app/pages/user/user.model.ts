@@ -21,11 +21,12 @@ export interface User {
 }
 
 export enum UserType {
-    employee = 1,
-    applicant = 2
+    Unemployed = 1,
+    employee = 2
 }
 
 export enum UserCategory {
-    technical = 1,
-    humanResources = 2
+    normal = 1,
+    technical = 2,
+    humanResources = 3
 }

@@ -22,7 +22,7 @@ export class UserHeaderComponent implements OnInit {
   }
 
   getTotalApplicants() {
-    return this.users.filter(x => x.type === UserType.applicant).length;
+    return this.users.filter(x => x.type === UserType.Unemployed).length;
   }
 
   getPercentageApplicants() {

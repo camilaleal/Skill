@@ -1,4 +1,6 @@
 <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
+  <meta name="viewport" content="width=device-width">
+
   <span class="mask bg-dark"></span>
 </div>
 <div class="container-fluid mt--9 pb-5" *ngIf="jobApplicants">
@@ -18,8 +20,7 @@
             <thead class="thead-light">
               <tr>
                 <th scope="col">Vaga</th>
-                <th scope="col"></th>
-                <th scope="col">Empresas</th>
+               <!--<th scope="col">Empresas</th>-->
                 <th scope="col">Salário base</th>
                 <th scope="col">Nível</th>
                 <th scope="col">Candidato</th>
@@ -31,19 +32,19 @@
             </thead>
             <tbody>
               <tr *ngFor="let jobApplicant of jobApplicants">
-                <td>
+                <!-- <td>
                   {{jobApplicant.job.id}}
-                </td>
+                </td>  -->
                 <td>
                   <a routerLink="/vaga/{{jobApplicant.job.id}}">
                     {{jobApplicant.job.name}}
-                  </a>
+                  </a> 
                 </td>
-                <td>
-                  <a routerLink="/time/{{jobApplicant.job.team.id}}">
-                    {{jobApplicant.job.team.name}}
-                  </a>
-                </td>
+                <!-- <td>
+                  <a routerLink="/time/{{jobApplicant.job.company.id}}">
+                    {{jobApplicant.job.company.name}}
+                  </a> 
+                </td> -->
                 <td>
                   {{jobApplicant.job.remuneration | currency}}
                 </td>

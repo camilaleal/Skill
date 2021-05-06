@@ -22,13 +22,13 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/candidaturas', title: 'Candidaturas',
     icon: 'fa-chalkboard-teacher', class: 'text-primary',
-    userType: [UserType.employee, UserType.applicant],
+    userType: [UserType.employee, UserType.Unemployed],
     userCategory: [UserCategory.humanResources]
   },
   {
     path: '/vagas', title: 'Vagas',
     icon: 'fa-user-tie', class: 'text-primary',
-    userType: [UserType.employee, UserType.applicant],
+    userType: [UserType.employee, UserType.Unemployed],
     userCategory: [UserCategory.humanResources]
   },
   // {
@@ -40,7 +40,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/entrevistas', title: 'Entrevistas',
     icon: 'fa-clipboard', class: 'text-primary',
-    userType: [UserType.employee, UserType.applicant],
+    userType: [UserType.employee, UserType.Unemployed],
     userCategory: [UserCategory.humanResources, UserCategory.technical]
   }
   // ,
