@@ -28,6 +28,12 @@ namespace WebApi.Controllers
         private readonly IJobRepository _jobRepository;
         private readonly IJobSkillRepository _jobSkillRepository;
 
+        private readonly IJobInterviewRepository _jobInterviewRepository;
+        private readonly IJobInterviewService _jobInterviewService;
+        private readonly IJobFeedBackService _jobFeedBackService;
+        private readonly IJobFeedBackRepository _jobFeedBackRepository;
+        private readonly IJobFeedBackSkillRepository _jobFeedBackSkillRepository;
+
         private readonly IJobApplicantRepository _jobApplicantRepository;
         private readonly IJobApplicantService _jobApplicantService;
 
@@ -42,6 +48,11 @@ namespace WebApi.Controllers
             IUserSkillRepository userSkillRepository,
             IJobService jobService,
             IJobRepository jobRepository,
+            IJobInterviewRepository jobInterviewRepository,
+            IJobInterviewService jobInterviewService,
+            IJobFeedBackService jobFeedBackService,
+            IJobFeedBackRepository jobFeedBackRepository,
+            IJobFeedBackSkillRepository jobFeedBackSkillRepository,
             IJobSkillRepository jobSkillRepository,
             IJobApplicantRepository jobApplicantRepository,
             IJobApplicantService jobApplicantService,
@@ -61,6 +72,13 @@ namespace WebApi.Controllers
             _jobSkillRepository = jobSkillRepository;
             _jobRepository = jobRepository;
             _jobService = jobService;
+
+            _jobInterviewRepository = jobInterviewRepository;
+            _jobInterviewService = jobInterviewService;
+
+            _jobFeedBackService = jobFeedBackService;
+            _jobFeedBackRepository = jobFeedBackRepository;
+            _jobFeedBackSkillRepository = jobFeedBackSkillRepository;
 
             _jobApplicantRepository = jobApplicantRepository;
             _jobApplicantService = jobApplicantService;
@@ -96,6 +114,7 @@ namespace WebApi.Controllers
                 LoadMockUsers();
                 LoadMockJobs();
                 LoadJobApplicant();
+                LoadJobInterview();
 
                 return Ok("Done!");
             }
@@ -315,6 +334,58 @@ namespace WebApi.Controllers
                     SalaryClaim = RamdomValue()
                 });
             }
+        }
+
+        private void LoadJobInterview()
+        {
+            int numberJobInterviews = 10;
+
+            var applicants = _userRepository.GetAll().Where(x => x.Type == UserType.Unemployed).ToList();
+            var RHs = _userRepository.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.HumanResources).ToList();
+            var Technicals = _userRepository.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.Technical).ToList();
+            var jobs = _jobRepository.GetAll();
+
+            for (int i = 0; i < numberJobInterviews; i++)
+            {
+                var job = jobs[_random.Next(jobs.Count)];
+                var applicant = applicants[_random.Next(applicants.Count)];
+
+                _jobFeedBackRepository.Insert(new JobFeedBack()
+                {
+
+                    IdApplicant = applicant.Id,
+                    IdJob = job.Id,
+                    IdUserTecnical = Technicals.Where(x => x.IdCompany == job.IdCompany).First().Id,
+                    Recruiter = "",
+                    Technical = "",
+
+                });
+
+                _jobInterviewRepository.Insert(new JobInterview()
+                {
+                    IdJobFeedBack = (int)_jobFeedBackRepository.GetAll().Last().Id,
+                    IdJobApplicant = (int)applicant.Id,
+                    IdUserRecruiter = (int)RHs.Where(x => x.IdCompany == job.IdCompany).First().Id,
+                    IdUserTechnical = (int)Technicals.Where(x => x.IdCompany == job.IdCompany).First().Id,
+                    Date = job.RegistryDate.Value.AddDays(_random.Next(7,20))
+                });
+
+                foreach (var jobSkill in job.Skills)
+                {
+                    _jobFeedBackSkillRepository.Insert(new JobFeedBackSkill()
+                    {
+
+                        IdApplicant = applicant.Id,
+                        IdJobFeedBack = (int)_jobFeedBackRepository.GetAll().Last().Id,
+                        IdSkill = jobSkill.Id,
+                        SelfEvaluation = _userSkillRepository.GetAll().Where(x => x.IdUser == applicant.Id && x.IdSkill == jobSkill.Id).First().Ranking,
+                        TechnicalEvaluation = _random.Next(1, 5),
+                        jobSkillRanking = _jobSkillRepository.GetAll().Where(x => x.IdJob == job.Id && x.IdSkill == jobSkill.Id).First().Ranking,
+                        Comment = ""
+                    });
+                }
+            }
+
         }
 
         #region random data
