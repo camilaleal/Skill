@@ -30,6 +30,7 @@ namespace WebApi.Controllers
 
         private readonly IJobInterviewRepository _jobInterviewRepository;
         private readonly IJobInterviewService _jobInterviewService;
+
         private readonly IJobFeedBackService _jobFeedBackService;
         private readonly IJobFeedBackRepository _jobFeedBackRepository;
         private readonly IJobFeedBackSkillRepository _jobFeedBackSkillRepository;
@@ -43,19 +44,25 @@ namespace WebApi.Controllers
         public InfraController(
             ISkillRepository skillRepository,
             ISkillService skillService,
+
             IUserService userService,
             IUserRepository userRepository,
             IUserSkillRepository userSkillRepository,
+            
             IJobService jobService,
             IJobRepository jobRepository,
+            IJobSkillRepository jobSkillRepository,
+            
             IJobInterviewRepository jobInterviewRepository,
             IJobInterviewService jobInterviewService,
+            
             IJobFeedBackService jobFeedBackService,
             IJobFeedBackRepository jobFeedBackRepository,
             IJobFeedBackSkillRepository jobFeedBackSkillRepository,
-            IJobSkillRepository jobSkillRepository,
+            
             IJobApplicantRepository jobApplicantRepository,
             IJobApplicantService jobApplicantService,
+            
             ICompanyRepository companyRepository,
             ICompanyService companyService
         )
@@ -69,9 +76,9 @@ namespace WebApi.Controllers
             _userRepository = userRepository;
             _userService = userService;
 
-            _jobSkillRepository = jobSkillRepository;
             _jobRepository = jobRepository;
             _jobService = jobService;
+            _jobSkillRepository = jobSkillRepository;
 
             _jobInterviewRepository = jobInterviewRepository;
             _jobInterviewService = jobInterviewService;
@@ -114,6 +121,21 @@ namespace WebApi.Controllers
                 LoadMockUsers();
                 LoadMockJobs();
                 LoadJobApplicant();
+
+                return Ok("Done!");
+            }
+            catch (Exception ex)
+            {
+                return UnprocessableEntity(ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Infra/MockInterview")]
+        public ActionResult MockInterview()
+        {
+            try
+            {
                 LoadJobInterview();
 
                 return Ok("Done!");
@@ -127,7 +149,7 @@ namespace WebApi.Controllers
         private void LoadMockCompanys()
         {
 
-            int numberMaximumCompany = 5;
+            int numberMaximumCompany = 2;
 
             foreach (var item in _companyRepository.GetAll())
             {
@@ -143,12 +165,12 @@ namespace WebApi.Controllers
 
                 };
 
-                _companyRepository.Insert(newCompany);
+                _companyService.Insert(newCompany);
             }
 
         }
 
-            private void LoadMockSkills()
+        private void LoadMockSkills()
         {
             foreach (var item in _skillRepository.GetAll())
             {
@@ -241,7 +263,7 @@ namespace WebApi.Controllers
                     newUser.CurrentCompany = selectedCompany.Name;
                     newUser.IdCompany = selectedCompany.Id;
                 }
-                for (int j = 0; j < _random.Next(1, numberMaximumUserSkill); j++)
+                for (int j = 0; j < _random.Next(4, numberMaximumUserSkill); j++)
                 {
                     var idSkill = skills[_random.Next(skills.Count)].Id;
 
@@ -340,24 +362,27 @@ namespace WebApi.Controllers
         {
             int numberJobInterviews = 10;
 
-            var applicants = _userRepository.GetAll().Where(x => x.Type == UserType.Unemployed).ToList();
-            var RHs = _userRepository.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.HumanResources).ToList();
-            var Technicals = _userRepository.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.Technical).ToList();
-            var jobs = _jobRepository.GetAll();
+            var applicants = _userService.GetAll().Where(x => x.Type == UserType.Unemployed).ToList();
+            var RHs = _userService.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.HumanResources).ToList();
+            var Technicals = _userService.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.Technical).ToList();
+            var jobs = _jobService.GetAll();
 
             for (int i = 0; i < numberJobInterviews; i++)
             {
                 var job = jobs[_random.Next(jobs.Count)];
                 var applicant = applicants[_random.Next(applicants.Count)];
+                applicant.Skills = _userSkillRepository.GetAll().Where(x => x.IdUser == applicant.Id).ToList();
+                var technical = Technicals.Where(x => x.IdCompany == job.IdCompany).FirstOrDefault();
+                var RH = RHs.Where(x => x.IdCompany == job.IdCompany).FirstOrDefault();
 
                 _jobFeedBackRepository.Insert(new JobFeedBack()
                 {
-
+                    
                     IdApplicant = applicant.Id,
                     IdJob = job.Id,
-                    IdUserTecnical = Technicals.Where(x => x.IdCompany == job.IdCompany).First().Id,
-                    Recruiter = "",
-                    Technical = "",
+                    IdUserTecnical = technical.Id,
+                    Recruiter = "Parecer do recrutador sobre a entrevista",
+                    Technical = "Parecer do tecnico sobre a entrevista"
 
                 });
 
@@ -365,27 +390,30 @@ namespace WebApi.Controllers
                 {
                     IdJobFeedBack = (int)_jobFeedBackRepository.GetAll().Last().Id,
                     IdJobApplicant = (int)applicant.Id,
-                    IdUserRecruiter = (int)RHs.Where(x => x.IdCompany == job.IdCompany).First().Id,
-                    IdUserTechnical = (int)Technicals.Where(x => x.IdCompany == job.IdCompany).First().Id,
-                    Date = job.RegistryDate.Value.AddDays(_random.Next(7,20))
+                    IdUserRecruiter = (int)RH.Id,
+                    IdUserTechnical = (int)technical.Id,
+                    Date = job.RegistryDate.Value.AddDays(_random.Next(7, 20))
                 });
+                
+                var idfeedback = _jobFeedBackService.GetAll().Last().Id;
 
                 foreach (var jobSkill in job.Skills)
                 {
+                    var selfRank = applicant.Skills.Where(x => x.IdSkill == jobSkill.IdSkill).DefaultIfEmpty(new UserSkill { Ranking = 0 }).First().Ranking;
+                    var jobRank = job.Skills.Where(x => x.IdSkill == jobSkill.IdSkill).First().Ranking;
+
                     _jobFeedBackSkillRepository.Insert(new JobFeedBackSkill()
                     {
-
                         IdApplicant = applicant.Id,
-                        IdJobFeedBack = (int)_jobFeedBackRepository.GetAll().Last().Id,
+                        IdJobFeedBack = (int) idfeedback,
                         IdSkill = jobSkill.Id,
-                        SelfEvaluation = _userSkillRepository.GetAll().Where(x => x.IdUser == applicant.Id && x.IdSkill == jobSkill.Id).First().Ranking,
+                        SelfEvaluation = selfRank,
                         TechnicalEvaluation = _random.Next(1, 5),
-                        jobSkillRanking = _jobSkillRepository.GetAll().Where(x => x.IdJob == job.Id && x.IdSkill == jobSkill.Id).First().Ranking,
-                        Comment = ""
+                        jobSkillRanking = jobRank,
+                        Comment = "Avaliado pelo tecnico " + technical.Name + " por teste/questionario."
                     });
                 }
             }
-
         }
 
         #region random data

@@ -112,6 +112,7 @@ namespace Data.Migration.Versions
                              RegistryDate           DATETIME,
                              IdJobFeedBack          INTEGER,
                              IdSkill                INTEGER,
+                             IdApplicant            INTEGER,
                              jobSkillRanking        INTEGER,
                              SelfEvaluation         INTEGER,
                              TechnicalEvaluation    INTEGER,
