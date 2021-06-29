@@ -388,7 +388,6 @@ namespace WebApi.Controllers
                     IdUserTecnical = technical.Id,
                     Recruiter = "Parecer do recrutador sobre a entrevista",
                     Technical = "Parecer do tecnico sobre a entrevista"
-
                 });
 
                 _jobInterviewRepository.Insert(new JobInterview()
@@ -397,7 +396,7 @@ namespace WebApi.Controllers
                     IdJobApplicant = (int)applicant.Id,
                     IdUserRecruiter = (int)RH.Id,
                     IdUserTechnical = (int)technical.Id,
-                    Date = job.RegistryDate.Value.AddDays(_random.Next(7, 20))
+                    Date = job.RegistryDate.Value.AddDays(_random.Next(7, 20)),
                 });
                 
                 var idfeedback = _jobFeedBackService.GetAll().Last().Id;
@@ -450,7 +449,7 @@ namespace WebApi.Controllers
 
         private UserCategory GenerateUserCategory()
         {
-            switch (_random.Next(5))
+            switch (_random.Next(1,3))
             {
                 case 1: return UserCategory.HumanResources;
                 case 2: return UserCategory.Technical;

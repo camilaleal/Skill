@@ -41,7 +41,6 @@ namespace Core.Services
             var jobFeedBack = _repository.Get(id);
             jobFeedBack.Applicant = _userService.Get(jobFeedBack.IdApplicant);
             jobFeedBack.UserTechnical = _userService.Get(jobFeedBack.IdUserTecnical);
-            jobFeedBack.Technical = jobFeedBack.UserTechnical.Name;
             jobFeedBack.Job = _jobService.Get(jobFeedBack.IdJob);
             jobFeedBack.Skills = LoadSkills(id);
 
@@ -50,7 +49,7 @@ namespace Core.Services
 
         private List<JobFeedBackSkill> LoadSkills(long id)
         {
-            var jobFeedBackSkills = _jobFeedBackSkillRepository.GetAll().Where(x => x.IdJobFeedBack == id);
+            var jobFeedBackSkills = _jobFeedBackSkillRepository.GetAllByRelacionalKey(id);
 
             foreach (var jobFeedBackSkill in jobFeedBackSkills)
             {
