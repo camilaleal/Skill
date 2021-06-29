@@ -252,7 +252,6 @@ namespace WebApi.Controllers
                     Phone = RamdomPhone(),
                     Address = RamdomAddress(),
                     Type = GenerateUserType(),
-                    Category = GenerateUserCategory(),
                     CurrentPosition = RamdomPosition(),
                     CurrentWage = RamdomValue(),
                     Skills = new List<UserSkill>(),
@@ -260,10 +259,15 @@ namespace WebApi.Controllers
                 };
                 if (newUser.Type != UserType.Unemployed)
                 {
+                    newUser.Category = GenerateUserCategory();
                     newUser.CurrentCompany = selectedCompany.Name;
                     newUser.IdCompany = selectedCompany.Id;
+                } 
+                else 
+                { 
+                    newUser.Category = UserCategory.Normal; 
                 }
-                for (int j = 0; j < _random.Next(4, numberMaximumUserSkill); j++)
+                for (int j = 0; j < _random.Next(6, numberMaximumUserSkill); j++)
                 {
                     var idSkill = skills[_random.Next(skills.Count)].Id;
 
@@ -276,7 +280,7 @@ namespace WebApi.Controllers
                         newUser.Skills.Add(new UserSkill()
                         {
                             IdSkill = idSkill,
-                            Ranking = _random.Next(1, 5)
+                            Ranking = _random.Next(2, 5)
                         });
                     }
                 }
@@ -344,7 +348,7 @@ namespace WebApi.Controllers
         {
             int numberJobApplicants = 20;
 
-            var users = _userRepository.GetAll();
+            var users = _userRepository.GetAll().Where(x => x.Type == UserType.Unemployed || x.Category == UserCategory.Normal).ToList();
             var jobs = _jobRepository.GetAll();
 
             for (int i = 0; i < numberJobApplicants; i++)
@@ -362,22 +366,23 @@ namespace WebApi.Controllers
         {
             int numberJobInterviews = 10;
 
-            var applicants = _userService.GetAll().Where(x => x.Type == UserType.Unemployed).ToList();
+            var jobApplicants = _jobApplicantService.GetAll();
+            var jobApplicantsFiltred = jobApplicants.Where(x => x.Score <= 60).ToList();
             var RHs = _userService.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.HumanResources).ToList();
             var Technicals = _userService.GetAll().Where(x => x.Type == UserType.Employee && x.Category == UserCategory.Technical).ToList();
-            var jobs = _jobService.GetAll();
 
             for (int i = 0; i < numberJobInterviews; i++)
             {
-                var job = jobs[_random.Next(jobs.Count)];
-                var applicant = applicants[_random.Next(applicants.Count)];
+                var jobApplicant = jobApplicantsFiltred[_random.Next(jobApplicantsFiltred.Count)];
+                jobApplicant = _jobFeedBackRepository.GetAll().Where(x => x.IdJob == jobApplicant.IdJob && x.IdApplicant == jobApplicant.IdApplicant) == null ? jobApplicant : jobApplicant = jobApplicantsFiltred[_random.Next(jobApplicantsFiltred.Count)];
+                var job = _jobService.GetAll().Where(x => x.Id == jobApplicant.IdJob).FirstOrDefault();
+                var applicant = _userService.GetAll().Where(x => x.Id == jobApplicant.IdApplicant).FirstOrDefault();
                 applicant.Skills = _userSkillRepository.GetAll().Where(x => x.IdUser == applicant.Id).ToList();
                 var technical = Technicals.Where(x => x.IdCompany == job.IdCompany).FirstOrDefault();
                 var RH = RHs.Where(x => x.IdCompany == job.IdCompany).FirstOrDefault();
 
                 _jobFeedBackRepository.Insert(new JobFeedBack()
-                {
-                    
+                {    
                     IdApplicant = applicant.Id,
                     IdJob = job.Id,
                     IdUserTecnical = technical.Id,
