@@ -410,7 +410,7 @@ namespace WebApi.Controllers
                     {
                         IdApplicant = applicant.Id,
                         IdJobFeedBack = (int) idfeedback,
-                        IdSkill = jobSkill.Id,
+                        IdSkill = jobSkill.IdSkill,
                         SelfEvaluation = selfRank,
                         TechnicalEvaluation = _random.Next(1, 5),
                         jobSkillRanking = jobRank,
